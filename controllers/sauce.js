@@ -40,7 +40,7 @@ exports.modifySauce = (req, res, next) => {
 
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id})
-      .then(sauce => {
+      .then((sauce) => {
           if (sauce.userId != req.auth.userId) {
               res.status(401).json({message: 'Not authorized'});
           } else {
@@ -76,7 +76,7 @@ exports.deleteSauce = (req, res, next) => {
         (error) => {res.status(400).json({error: error});}
     );
   }
-/*
+
   exports.likeSauce = (req, res, next) => {
     Sauce.findOne({_id : req.params.id})
     .then((sauce) => {
@@ -90,8 +90,38 @@ exports.deleteSauce = (req, res, next) => {
           .then(() => res.status(201).json({message: "Sauce like +1"}))
           .catch(error => { res.status(400).json( { error })});
         }
+        if(sauce.usersLiked.includes(req.body.userId) && req.body.like === 0){
+          Sauce.updateOne({_id: req.params.id},
+          {
+            $inc: {likes: -1},
+            $pull: {usersLiked: req.body.userId}
+          }
+          )
+          .then(() => res.status(201).json({message: "Sauce like 0"}))
+          .catch(error => { res.status(400).json( { error })});
+        }
+        if(!sauce.usersDisliked.includes(req.body.userId) && req.body.like === -1){
+          Sauce.updateOne({_id: req.params.id},
+          {
+            $inc: {dislikes: 1},
+            $push: {usersDisliked: req.body.userId}
+          }
+          )
+          .then(() => res.status(201).json({message: "Sauce dislike +1"}))
+          .catch(error => { res.status(400).json( { error })});
+        }
+        if(sauce.usersDisliked.includes(req.body.userId) && req.body.like === 0){
+          Sauce.updateOne({_id: req.params.id},
+          {
+            $inc: {dislikes: -1},
+            $pull: {usersDisliked: req.body.userId}
+          }
+          )
+          .then(() => res.status(201).json({message: "Sauce dislike 0"}))
+          .catch(error => { res.status(400).json( { error })});
+        }
         
-      })
+    })
     .catch(error => { res.status(400).json( { error })});
 
-}*/
+}
