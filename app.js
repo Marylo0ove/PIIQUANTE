@@ -1,6 +1,7 @@
 const { json } = require('express');
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require("helmet");
 
 const sauceRoutes = require('./routes/sauce');
 const Sauce = require('./models/sauce');
@@ -8,6 +9,7 @@ const userRoutes = require('./routes/user');
 const path = require('path');
 
 const app = express();
+app.use(helmet({ crossOriginResourcePolicy: { policy: "same-site" } }));
 app.use(express.json());
 
 
