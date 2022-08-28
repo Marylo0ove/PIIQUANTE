@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+// On utilise la fonction schéma mise à dispo par le package mongoose auquel on va passer un objet
+// qui va dicter les différents champs dont notre schéma a besoin
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
   name: { type: String, required: true },
@@ -15,3 +17,5 @@ const sauceSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('Sauce', sauceSchema);
+
+// Nom de la collection = pluriel du modèle = Sauces
