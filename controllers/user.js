@@ -3,7 +3,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken'); // créé les tokens et les vérifis  
 
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10) // fonction asynchrone, on "sale" 10 fois"
+    bcrypt.hash(req.body.password, 10) // fonction asynchrone, on "sale" 10 fois    
       .then(hash => { // On récupère le hash
         const user = new User({ // On créé le nouveau user
           email: req.body.email,
