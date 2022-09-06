@@ -13,7 +13,6 @@ exports.createSauce = (req, res, next) => {
       userId: req.auth.userId, // UserId récupéré depuis le token
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // Génération de l'url de l'image
   });
-  
   sauce.save()// Méthode save enregistre dans la base de donnée, renvoie une promise
   .then(() => { res.status(201).json({message: 'Objet enregistré !'})}) // réponse si ok sinon expiration de la requête
   .catch(error => { res.status(400).json( { error })})
@@ -31,6 +30,9 @@ exports.modifySauce = (req, res, next) => {
   delete sauceObject._userId; // Pour éviter qu'un objet soit réattribué à quelqu'un d'autre
   Sauce.findOne({_id: req.params.id}) // Recherche dans la bdd pour s'assurer que c'est le créateur qui modifie
       .then((sauce) => {
+        if(req.file){
+        const filename = sauce.imageUrl.split('/images/')[1]; // Récup du nom de fichier qui est juste après '/images/'
+              fs.unlink(`images/${filename}`, () => {})} // Méthode unlink de fs qui supprime le fichier image
           if (sauce.userId != req.auth.userId) { // Utilisateurs différents -> non autorisé
               res.status(401).json({ message : 'Not authorized'});
           } else { // Même utilisateur = OK
@@ -38,6 +40,7 @@ exports.modifySauce = (req, res, next) => {
               .then(() => res.status(200).json({message : 'Objet modifié!'}))
               .catch(error => res.status(401).json({ error }));
           }
+        ;
       })
       .catch((error) => {
           res.status(400).json({ error : error });
@@ -92,7 +95,7 @@ exports.likeSauce = (req, res, next) => {
   .then((sauce) => {
 switch(req.body.like){
   case 1 : // L'utilisateur n'a pas déjà liké
-        if(!sauce.usersLiked.includes(req.body.userId) && req.body.like === 1){
+        if(!sauce.usersLiked.includes(req.body.userId) && !sauce.usersDisliked.includes(req.body.userId) && req.body.like === 1){
           Sauce.updateOne({_id: req.params.id},
           {
             $inc: {likes: 1}, // Ajout du like
@@ -126,7 +129,7 @@ switch(req.body.like){
         }
         break;
         case -1 : // L'utilisateur n'a pas déjà disliké
-        if(!sauce.usersDisliked.includes(req.body.userId) && req.body.like === -1){
+        if(!sauce.usersDisliked.includes(req.body.userId) && !sauce.usersLiked.includes(req.body.userId) && req.body.like === -1){
           Sauce.updateOne({_id: req.params.id},
           {
             $inc: {dislikes: 1}, // Ajout du dislike
