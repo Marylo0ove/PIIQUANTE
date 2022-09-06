@@ -1,4 +1,3 @@
-//const { json } = require('express');
 const express = require('express'); //Importation d'express
 const mongoose = require('mongoose'); //Importation de mongoose pour communiquer avec la base de données MongoDB
 const helmet = require("helmet"); // Importation d'helmet 
