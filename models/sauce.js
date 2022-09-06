@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // Importation de mongoose pour communiquer avec la base de données MongoDB
 
 // On utilise la fonction schéma mise à dispo par le package mongoose auquel on va passer un objet
 // qui va dicter les différents champs dont notre schéma a besoin
@@ -16,6 +16,6 @@ const sauceSchema = mongoose.Schema({
   usersDisliked: { type: Array}
 });
 
-module.exports = mongoose.model('Sauce', sauceSchema);
+module.exports = mongoose.model('Sauce', sauceSchema); // Exportation du model
 
 // Nom de la collection = pluriel du modèle = Sauces

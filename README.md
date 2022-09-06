@@ -12,6 +12,7 @@ Insert your MongoDB infos in the .env file
 
 ## Development server
 
-Run 'nodemon server'
+Run 'nodemon server' from the backend file
+Run 'npm run start' from the frontend file
 
 
