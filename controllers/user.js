@@ -37,7 +37,7 @@ exports.login = (req, res, next) => {
                       userId: user._id, // On retourne objet avec infos necessaires à l'authentification des requêtes émises par la suite
                       token: jwt.sign( // Appel de la fonction sign
                           { userId: user._id }, // Payload : données que l'on veut encoder à l'intérieur du token pour identifier chaque requête
-                          'RANDOM_TOKEN_SECRET', // Clé d'encodage qui sera plus complexe en prod
+                          process.env.CLE_TOKEN, // Clé d'encodage qui sera plus complexe en prod
                           { expiresIn: '24h' } // Expiration au bout de 24h
                       )
                   });

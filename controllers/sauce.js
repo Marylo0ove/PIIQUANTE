@@ -121,14 +121,14 @@ switch(req.body.like){
           Sauce.updateOne({_id: req.params.id},
           {
             $inc: {dislikes: -1}, // Suppression du dislike
-            $pull: {usersDisliked: req.body.userId} // Suppression du userId dans usersLiked
+            $pull: {usersDisliked: req.body.userId} // Suppression du userId dans usersDisliked
           }
           )
           .then(() => res.status(201).json({message: "Sauce dislike 0"}))
           .catch(error => { res.status(400).json( { error })});
         }
         break;
-        case -1 : // DISLIKE L'utilisateur n'a pas déjà disliké ni liké
+  case -1 : // DISLIKE L'utilisateur n'a pas déjà disliké ni liké
         if(!sauce.usersDisliked.includes(req.body.userId) && !sauce.usersLiked.includes(req.body.userId) && req.body.like === -1){
           Sauce.updateOne({_id: req.params.id},
           {

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose'); // Importation de mongoose pour communiquer avec la base de données MongoDB
+const mongodbErrorHandler = require('mongoose-mongodb-errors'); // Importation du package de gestion des messages d'erreur MongoDB
 
 // On utilise la fonction schéma mise à dispo par le package mongoose auquel on va passer un objet
 // qui va dicter les différents champs dont notre schéma a besoin
@@ -15,6 +16,8 @@ const sauceSchema = mongoose.Schema({
   usersLiked: { type: Array},
   usersDisliked: { type: Array}
 });
+
+sauceSchema.plugin(mongodbErrorHandler);
 
 module.exports = mongoose.model('Sauce', sauceSchema); // Exportation du model
 
