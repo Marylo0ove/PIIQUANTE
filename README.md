@@ -15,6 +15,10 @@ Insert your MongoDB infos in the .env file
 Run 'nodemon server' from the backend file
 Run 'npm run start' from the frontend file
 
+## Password
+
+The user password must be 8 caracters minimum, with lowercase, uppercase and 2 digits. No spaces
+
 
 
 
